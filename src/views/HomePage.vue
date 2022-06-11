@@ -17,11 +17,22 @@
         <strong>Ready to create an app?</strong>
         <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
       </div>
+
+      <ion-list>
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>
+            <h1>Create Idea</h1>
+            <ion-note>Run Idea By Brandy</ion-note>
+          </ion-label>
+          <ion-badge color="success" slot="end"> 5 Days </ion-badge>
+        </ion-item>
+      </ion-list>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
+<script>
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { defineComponent } from 'vue';
 
