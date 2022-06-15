@@ -24,9 +24,26 @@
       </ion-item>
 
       <ion-item>
+        <ion-label>Foto URL Unplash</ion-label>
+        <ion-checkbox slot="end" value="griff" v-on:click="changeAllowCamera"></ion-checkbox>
+      </ion-item>
+
+      <ion-item v-if="allowCamera">
         <ion-label position="floating">Foto</ion-label>
         <ion-input v-model="siswa.foto" inputmode="url" type="url" required></ion-input>
       </ion-item>
+
+      <ion-list v-else>
+        <ion-button size="small" fill="clear" @click="uploadCamera">
+          <ion-icon slot="start" name="camera"></ion-icon>Upload foto
+        </ion-button>
+      </ion-list>
+
+      <ion-list v-if="!allowCamera">
+        <ion-thumbnail v-if="siswa.foto != null" slot="start">
+          <ion-img :src="siswa.foto"></ion-img>
+        </ion-thumbnail>
+      </ion-list>
 
       <ion-button expand="block" type="submit" shape="round">Simpan</ion-button>
     </form>
@@ -36,13 +53,23 @@
 <script>
 import { defineComponent } from "vue";
 
-import { IonButton, IonItem, IonLabel, IonInput } from "@ionic/vue";
+import {
+  IonButton,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonCheckbox,
+  IonImg,
+} from "@ionic/vue";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+
 export default defineComponent({
   name: "SiswaCreate",
   data() {
     return {
       siswa: {},
       message: null,
+      allowCamera: false
     };
   },
   methods: {
@@ -50,7 +77,7 @@ export default defineComponent({
       // Validasi jik null
       let result = Object.values(this.siswa).every(o => o === null);
       if (result) {
-        this.message = 'Form tidak bisa kosong'
+        this.message = "Form tidak bisa kosong";
       }
       // Jalankan Action store/index.js
       this.$store.dispatch("addSiswa", this.siswa);
@@ -58,23 +85,40 @@ export default defineComponent({
       // Reset data:
       this.resetFields();
 
-      return this.$router.replace('/siswa');
+      return this.$router.replace("/siswa");
     },
 
     resetFields() {
       this.siswa = {};
       this.message = null;
     },
-   
+
+    // Allow upload foto via url
+    changeAllowCamera() {
+      this.allowCamera = !this.allowCamera;
+    },
+
+    // Upload image/foto via local storage
+    async  uploadCamera() {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        source: CameraSource.Camera,
+        resultType: CameraResultType.Uri
+      });
+      // Can be set to the src of an image now
+      this.siswa.foto = image.webPath;
+    }
   },
   components: {
     IonButton,
     IonItem,
     IonLabel,
-    IonInput
+    IonInput,
+    IonCheckbox,
+    IonImg,
   }
 });
-
 </script>
 
 <style scoped>

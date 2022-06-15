@@ -2,7 +2,7 @@
   <main-layout page-title="Siswa">
 
     <!-- Slot yang ada di header main.vue -->
-    <template v-slot:buttonAdd>
+    <template  v-slot:buttonAdd>
       <ion-buttons slot="end">
         <ion-button router-link="/siswa/create">
           <ion-icon slot="icon-only" name="add"></ion-icon>
@@ -80,4 +80,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 </style>
