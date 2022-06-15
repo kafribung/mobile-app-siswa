@@ -68,7 +68,7 @@ const store = createStore({
     },
     getters: {
         siswas(state) {
-            return state.siswas;
+            return state.siswas.sort((a,b) => (a.id > b.id ? -1 : 1) );
         },
         siswa: (state) => (id) => {
             return state.siswas.find(siswa => siswa.id == id)
